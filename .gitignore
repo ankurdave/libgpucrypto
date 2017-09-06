@@ -1,0 +1,4 @@
+Makefile.dep
+objs/
+bin/
+lib/

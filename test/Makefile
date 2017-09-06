@@ -4,7 +4,7 @@ include ../Makefile.in
 
 #gpucrypto config
 GPUCRYPTO_LIBDIR = -L../lib/
-GPUCRYPTO_INCDIR = -I../
+GPUCRYPTO_INCDIR = -I../ -I../inc
 GPYCRYPTO_LIB = -lgpucrypto
 
 LIBDIR = $(OPENSSL_LIBDIR) \
@@ -17,7 +17,7 @@ INC += 	$(GPUCRYPTO_INCDIR)
 
 TARGET_DIR = ../bin/
 OBJ_DIR = ../objs/
-TARGET_FILES = rsa_test aes_test sha_test
+TARGET_FILES = rsa_test aes_test
 TARGETS = $(addprefix $(TARGET_DIR), $(TARGET_FILES))
 OBJS = $(addprefix $(OBJ_DIR), $(addsuffix .o, $(TARGET_FILES))) $(OBJ_DIR)common.o
 
@@ -30,7 +30,7 @@ $(OBJ_DIR):
 	mkdir $(OBJ_DIR)
 
 $(TARGET_DIR)% : $(OBJ_DIR)%.o |$(TARGET_DIR) $(OBJ_DIR) ../lib/libgpucrypto.a $(OBJ_DIR)common.o
-	$(CC) -o $@ $< $(CFLAGS) $(LIBS) $(LIBDIR) $(OBJ_DIR)common.o
+	$(NVCC) -o $@ $< $(NVCFLAGS) $(LIBS) $(LIBDIR) $(OBJ_DIR)common.o
 
 $(OBJ_DIR)%.o : %.cc
 	$(CC) $(CFLAGS) $(INC) $(NVINC) -c $< -o $@
